@@ -10,6 +10,9 @@ class Server {
         /* Puerto */ 
         this.port = process.env.PORT;
 
+        /* Rutas Controllers */
+        this.usuariosPath = '/api/usuarios';
+
         /* Middlewares */
         this.middlewares();
 
@@ -20,40 +23,13 @@ class Server {
     middlewares(){
         /* CORS */
         this.app.use(cors());
+
         /* Directorio Publico */
         this.app.use( express.static('public') )
     }
 
     route(){
-        this.app.get('/api', (req, res) => {
-            res.json({
-                ok: true,
-                msg: 'Get del API'
-            })
-        });
-
-        this.app.post('/api', (req, res) => {
-            res.json({
-                ok: true,
-                msg: 'Post del API'
-            })
-        });
-
-        this.app.put('/api', (req, res) => {
-            res.json({
-                ok: true,
-                msg: 'Put del API'
-            })
-        });
-
-        this.app.delete('/api', (req, res) => {
-            res.json({
-                ok: true,
-                msg: 'Delete del API'
-            })
-        });
-
-
+        this.app.use(this.usuariosPath, require('../routes/usuarios'));
     }
 
     listen(){
