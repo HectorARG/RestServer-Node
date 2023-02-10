@@ -1,30 +1,20 @@
 const { Router } = require('express');
-
 const router = Router();
 
+/* Controladores */
+const { 
+    usuariosGet, 
+    usuariosPost, 
+    usuariosPut, 
+    usuariosDelete, 
+    usuariosPatch 
+} = require('../controllers/usuarios');
 
-router.get('/', );
-
-router.post('/', (req, res) => {
-    res.json({
-        ok: true,
-        msg: 'Post del API'
-    })
-});
-
-router.put('/', (req, res) => {
-    res.json({
-        ok: true,
-        msg: 'Put del API'
-    })
-});
-
-router.delete('/', (req, res) => {
-    res.json({
-        ok: true,
-        msg: 'Delete del API'
-    })
-});
+router.get('/', usuariosGet);
+router.post('/', usuariosPost);
+router.put('/', usuariosPut);
+router.delete('/', usuariosDelete);
+router.patch('/', usuariosPatch);
 
 
 
