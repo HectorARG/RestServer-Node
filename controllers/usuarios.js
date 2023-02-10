@@ -16,11 +16,14 @@ const usuariosGet = (req, res = response) => {
 }
 
 const usuariosPost = (req, res = response) => {
+
+    const body = req.body;
         
     try {
         res.json({
             ok: true,
-            msg: 'Post del API'
+            msg: 'Post del API',
+            body
         });
     } catch (error) {
         res.status(400).json({
