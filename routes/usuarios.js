@@ -12,9 +12,9 @@ const {
 
 router.get('/', usuariosGet);
 router.post('/', usuariosPost);
-router.put('/', usuariosPut);
-router.delete('/', usuariosDelete);
-router.patch('/', usuariosPatch);
+router.put('/:id', usuariosPut);
+router.delete('/:id', usuariosDelete);
+router.patch('/:id', usuariosPatch);
 
 
 

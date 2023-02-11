@@ -31,10 +31,11 @@ class Server {
         this.app.use( express.static('public') )
     }
 
+    /* Rutas de mi aplicacion */
     route(){
         this.app.use(this.usuariosPath, require('../routes/usuarios'));
     }
-
+    /* Aplicacion corriendo en el puerto configurado */
     listen(){
         this.app.listen(this.port , () => {
             console.log('listening on port' , this.port)
@@ -42,5 +43,5 @@ class Server {
     }
 
 }
-
+/* Exportar modulo */
 module.exports = Server;

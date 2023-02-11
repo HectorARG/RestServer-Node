@@ -1,6 +1,8 @@
-const { response } = require('express');
+const { response, request } = require('express');
 
-const usuariosGet = (req, res = response) => {
+const usuariosGet = (req = request, res = response) => {
+
+    const query = req.query;
         
     try {
         res.json({
@@ -15,7 +17,7 @@ const usuariosGet = (req, res = response) => {
     }
 }
 
-const usuariosPost = (req, res = response) => {
+const usuariosPost = (req = request, res = response) => {
 
     const body = req.body;
         
@@ -33,12 +35,15 @@ const usuariosPost = (req, res = response) => {
     }
 }
 
-const usuariosPut = (req, res = response) => {
+const usuariosPut = (req = request, res = response) => {
+
+    const id = req.params.id;
         
     try {
         res.json({
             ok: true,
-            msg: 'Put del API'
+            msg: 'Put del API',
+            id
         });
     } catch (error) {
         res.status(400).json({
@@ -48,7 +53,7 @@ const usuariosPut = (req, res = response) => {
     }
 }
 
-const usuariosPatch = (req, res = response) => {
+const usuariosPatch = (req = request, res = response) => {
         
     try {
         res.json({
@@ -63,7 +68,7 @@ const usuariosPatch = (req, res = response) => {
     }
 }
 
-const usuariosDelete = (req, res = response) => {
+const usuariosDelete = (req = request, res = response) => {
         
     try {
         res.json({
@@ -78,6 +83,7 @@ const usuariosDelete = (req, res = response) => {
     }
 }
 
+/* Exportar todos los modulos en un arreglo */
 module.exports = {
     usuariosGet,
     usuariosPost,
