@@ -25,21 +25,11 @@ const usuariosPost = async (req = request, res = response) => {
     const { nombre, email, password, rol } = req.body;
     
     try {
-        //Validar si el email ya existe en la BD
-        const existeEmail = await Usuario.findOne({email});
-
-        if( existeEmail ){
-            return res.status(400).json({
-                ok: false,
-                msg: 'Correo electronico ya registrado'
-            })
-        }
-
         //Instanciar nuevo Usuario
         const usuario = new Usuario({ nombre, email, password, rol });
 
         //Encriptar contraseña
-        const salt = bcrypt.genSaltSync(15);
+        const salt = bcrypt.genSaltSync(10);
         usuario.password = bcrypt.hashSync(password, salt);
 
         //Guardar usuario en BD
@@ -57,15 +47,24 @@ const usuariosPost = async (req = request, res = response) => {
     }
 }
 
-const usuariosPut = (req = request, res = response) => {
+const usuariosPut = async (req = request, res = response) => {
 
     const id = req.params.id;
+    const { _id, password, google, ...resto } = req.body; 
         
     try {
+        if(password){
+            //Encriptar contraseña
+            const salt = bcrypt.genSaltSync(10);
+            resto.password = bcrypt.hashSync(password, salt);
+        }
+
+        const usuarioDB = await Usuario.findByIdAndUpdate(id, resto)
+
         res.json({
             ok: true,
             msg: 'Put del API',
-            id
+            usuarioDB
         });
     } catch (error) {
         res.status(400).json({
