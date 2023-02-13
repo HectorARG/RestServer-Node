@@ -1,6 +1,7 @@
 const Role = require('../models/role');
 const Usuario = require('../models/usuario');
 
+//Validar los roles en la base de datos
 const esRoleValido = async (rol = '') => {
     const existeRol = await Role.findOne({ rol });
     if( !existeRol ){
@@ -16,7 +17,7 @@ const existeEmail = async (email = '') => {
     }
 }
 
-//Validar si el email ya existe en la BD
+//Validar si el ID del usuario ya existe en la BD
 const existeUsuarioPorID = async (id) => {
     const existeUsuario = await Usuario.findById(id);
     if( !existeUsuario ){

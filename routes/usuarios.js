@@ -3,6 +3,16 @@ const { check } = require('express-validator');
 
 const router = Router();
 
+/* middlewares personalizados */
+const { validarCampos } = require('../middlewares/validar-campos');
+
+/* Helpers personalizados */
+const { 
+    esRoleValido, 
+    existeEmail, 
+    existeUsuarioPorID 
+} = require('../helpers/db-validators');
+
 /* Controladores */
 const { 
     usuariosGet, 
@@ -11,8 +21,6 @@ const {
     usuariosDelete, 
     usuariosPatch 
 } = require('../controllers/usuarios');
-const { esRoleValido, existeEmail, existeUsuarioPorID } = require('../helpers/db-validators');
-const { validarCampos } = require('../middlewares/validar-campos');
 
 router.get('/', usuariosGet);
 
