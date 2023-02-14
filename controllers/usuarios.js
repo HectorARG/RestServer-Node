@@ -3,14 +3,28 @@ const bcrypt = require('bcryptjs');
 
 const Usuario = require('../models/usuario');
 
-const usuariosGet = (req = request, res = response) => {
+const usuariosGet = async (req = request, res = response) => {
 
-    const query = req.query;
+    /* Numero de registros que regresara la busqueda enviada desde los PARAMS */
+    const { limite = 5, desde = 0 } = req.query;
+    /* Query de busqueda en MongoDB para traer solo a los usuarios con estatus "TRUE" */
+    const query = { estado: true };
+
+    const [total, usuarios] = await Promise.all([
+        /* Total de registros en BD + argumentos */
+        Usuario.countDocuments(query),
+        /* Busqueda Global de usuarios */
+        Usuario.find(query)
+        /* Donde va iniciar la busqueda */
+        .skip(desde)
+        /* Limite de la busqueda */
+        .limit(Number(limite))
+    ]);
         
     try {
         res.json({
-            ok: true,
-            msg: 'Get del API'
+            total,
+            usuarios,
         });
     } catch (error) {
         res.status(400).json({
@@ -89,13 +103,18 @@ const usuariosPatch = (req = request, res = response) => {
     }
 }
 
-const usuariosDelete = (req = request, res = response) => {
-        
+const usuariosDelete = async (req = request, res = response) => {
+
+    const { id } = req.params;
+
+    /* Fisicamente lo borramos */
+    // const usuario = await Usuario.findByIdAndDelete(id);
+    
+    /* Quitar usuario de la vista del cliente, simulando eliminacion fisica */
+    const usuario = Usuario.findByIdAndUpdate(id, { estado: false });
+
     try {
-        res.json({
-            ok: true,
-            msg: 'Delete del API'
-        });
+        res.json(usuario);
     } catch (error) {
         res.status(400).json({
             ok: false,
