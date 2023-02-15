@@ -112,8 +112,7 @@ const usuariosDelete = async (req = request, res = response) => {
     // const usuario = await Usuario.findByIdAndDelete(id);
     
     /* Quitar usuario de la vista del cliente, simulando eliminacion fisica */
-    const usuario = Usuario.findByIdAndUpdate(id, { estado: false });
-    // console.log(usuario);
+    const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
 
     try {
         res.json({
@@ -122,7 +121,7 @@ const usuariosDelete = async (req = request, res = response) => {
             uid
         });
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         res.status(400).json({
             ok: false,
             msg: 'Delete del API'
