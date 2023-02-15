@@ -4,8 +4,7 @@ const { check } = require('express-validator');
 const router = Router();
 
 /* middlewares personalizados */
-const { validarCampos } = require('../middlewares/validar-campos');
-const { validarJWT } = require('../middlewares/validar-jwt');
+const { validarCampos, validarJWT, esAdminRole, tieneRole } = require('../middlewares');
 
 /* Helpers personalizados */
 const { 
@@ -32,19 +31,21 @@ router.post('/', [
     check('email', 'El email es obligatorio').isEmail(),
     check('email'). custom( existeEmail ),
     // check('rol', 'No es un rol valido').isIn(['USER_ROLE', 'ADMIN_ROLE']),
-    check('rol').custom( esRoleValido ),
+    check('role').custom( esRoleValido ),
     validarCampos
 ], usuariosPost);
 
 router.put('/:id',[
     check('id', 'No es un ID valido').isMongoId(),
     check('id').custom( existeUsuarioPorID ),
-    check('rol').custom( esRoleValido ),
+    check('role').custom( esRoleValido ),
     validarCampos
 ], usuariosPut);
 
 router.delete('/:id', [
     validarJWT,
+    // esAdminRole,
+    tieneRole('ADMIN_ROLE','VENTAS_ROLE'),
     check('id', 'No es un ID valido').isMongoId(),
     check('id').custom( existeUsuarioPorID ),
     validarCampos

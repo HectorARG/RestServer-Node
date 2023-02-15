@@ -106,19 +106,21 @@ const usuariosPatch = (req = request, res = response) => {
 const usuariosDelete = async (req = request, res = response) => {
 
     const id = req.params.id;
-    const uid = req.uid;
-
+    const usuarioAutenticado = req.usuario;
+    
     /* Fisicamente lo borramos */
     // const usuario = await Usuario.findByIdAndDelete(id);
     
     /* Quitar usuario de la vista del cliente, simulando eliminacion fisica */
-    const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
+    const usuarioDelete = await Usuario.findByIdAndUpdate(id, { estado: false });
+
+    // const usuarioAutenticado = await req.usuarioAutenticado //Mi Solucion
 
     try {
         res.json({
             ok: true,
-            usuario,
-            uid
+            usuarioDelete,
+            // usuarioAutenticado
         });
     } catch (error) {
         console.log(error);
