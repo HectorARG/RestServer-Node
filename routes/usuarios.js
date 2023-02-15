@@ -5,6 +5,7 @@ const router = Router();
 
 /* middlewares personalizados */
 const { validarCampos } = require('../middlewares/validar-campos');
+const { validarJWT } = require('../middlewares/validar-jwt');
 
 /* Helpers personalizados */
 const { 
@@ -21,6 +22,7 @@ const {
     usuariosDelete, 
     usuariosPatch 
 } = require('../controllers/usuarios');
+
 
 router.get('/', usuariosGet);
 
@@ -42,6 +44,7 @@ router.put('/:id',[
 ], usuariosPut);
 
 router.delete('/:id', [
+    validarJWT,
     check('id', 'No es un ID valido').isMongoId(),
     check('id').custom( existeUsuarioPorID ),
     validarCampos

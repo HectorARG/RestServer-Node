@@ -105,17 +105,24 @@ const usuariosPatch = (req = request, res = response) => {
 
 const usuariosDelete = async (req = request, res = response) => {
 
-    const { id } = req.params;
+    const id = req.params.id;
+    const uid = req.uid;
 
     /* Fisicamente lo borramos */
     // const usuario = await Usuario.findByIdAndDelete(id);
     
     /* Quitar usuario de la vista del cliente, simulando eliminacion fisica */
     const usuario = Usuario.findByIdAndUpdate(id, { estado: false });
+    // console.log(usuario);
 
     try {
-        res.json(usuario);
+        res.json({
+            ok: true,
+            usuario,
+            uid
+        });
     } catch (error) {
+        // console.log(error);
         res.status(400).json({
             ok: false,
             msg: 'Delete del API'
