@@ -2,7 +2,53 @@ const { response, request } = require('express');
 
 const { Categoria } = require('../models');
 
+const categoriaGetAll = async (req = request, res = response) => {
+
+    const { limite = 5, desde = 0 } = req.query;
+    const query = { estado: true };
+
+    const [total, categorias] = await Promise.all([
+        Categoria.countDocuments(query),
+        Categoria.find(query)
+        .populate( 'usuario', 'nombre email' )
+        .skip(desde)
+        .limit(Number(limite))
+    ]);
+
+    // const categorias = await Categoria.find().populate( 'usuario', 'nombre email' );
+
+    try {
+        
+        res.json({
+            total,
+            categorias
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Error inesperado, contacte al administrador'
+        });
+    }
+        
+}
+
 const categoriaGet = async (req = request, res = response) => {
+
+    const id = req.params.id;
+
+    const categoriaDB = await Categoria.findById(id);
+
+    try {
+        res.status(201).json({
+            categoriaDB
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            msg: 'Error inesperado, contacte al administrador'
+        })
+    }
+
         
 }
 
@@ -45,14 +91,57 @@ const categoriaPost = async (req = request, res = response) => {
 
 const categoriaPut = async (req = request, res = response) => {
 
+    const id = req.params.id;
+    const nombre = req.body.nombre.toUpperCase(); 
+    const usuario = req.usuario._id;
+
+    const data = {
+        nombre,
+        usuario
+    }
+        
+    try {
+
+        const categoriaDB = await Categoria.findByIdAndUpdate(id, data)
+
+        res.json({
+            ok: true,
+            msg: 'Put del API',
+            categoriaDB
+        });
+    } catch (error) {
+        res.status(400).json({
+            ok: false,
+            msg: 'Put del API'
+        });
+    }
+
 }
 
-const categoriaDelete = async (req = request, res = response) => {  
+const categoriaDelete = async (req = request, res = response) => {
+    
+    const id = req.params.id;
+
+    const categoriaDelete = await Categoria.findByIdAndUpdate(id, { estado: false });
+
+    try {
+        res.json({
+            ok: true,
+            categoriaDelete,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            ok: false,
+            msg: 'Delete del API'
+        });
+    }
 
 }
 
 /* Exportar todos los modulos en un arreglo */
 module.exports = {
+    categoriaGetAll,
     categoriaGet,
     categoriaPost,
     categoriaPut,
