@@ -10,8 +10,11 @@ class Server {
         /* Puerto */ 
         this.port = process.env.PORT;
         /* Rutas Controllers */
-        this.usuariosPath = '/api/usuarios';
-        this.authPath = '/api/auth';
+        this.path = {
+            auth: '/api/auth',
+            categoria: '/api/categorias',
+            usuarios: '/api/usuarios',
+        }
         /* Coneccion a Base de Datos */
         this.coneccionDB();
         /* Middlewares */
@@ -36,8 +39,9 @@ class Server {
 
     /* Rutas de mi aplicacion */
     route(){
-        this.app.use(this.authPath, require('../routes/auth'));
-        this.app.use(this.usuariosPath, require('../routes/usuarios'));
+        this.app.use(this.path.auth, require('../routes/auth'));
+        this.app.use(this.path.categoria , require('../routes/categoria'));
+        this.app.use(this.path.usuarios, require('../routes/usuarios'));
     }
     
     /* Aplicacion corriendo en el puerto configurado */
