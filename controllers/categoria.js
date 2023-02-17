@@ -15,8 +15,6 @@ const categoriaGetAll = async (req = request, res = response) => {
         .limit(Number(limite))
     ]);
 
-    // const categorias = await Categoria.find().populate( 'usuario', 'nombre email' );
-
     try {
         
         res.json({
@@ -36,7 +34,7 @@ const categoriaGet = async (req = request, res = response) => {
 
     const id = req.params.id;
 
-    const categoriaDB = await Categoria.findById(id);
+    const categoriaDB = await Categoria.findById(id).populate( 'usuario', 'nombre email' );
 
     try {
         res.status(201).json({
