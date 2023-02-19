@@ -12,6 +12,7 @@ class Server {
         /* Rutas Controllers */
         this.path = {
             auth: '/api/auth',
+            buscar: '/api/buscar',
             categoria: '/api/categorias',
             productos: '/api/productos',
             usuarios: '/api/usuarios',
@@ -41,6 +42,7 @@ class Server {
     /* Rutas de mi aplicacion */
     route(){
         this.app.use(this.path.auth, require('../routes/auth'));
+        this.app.use(this.path.buscar, require('../routes/buscar'));
         this.app.use(this.path.categoria , require('../routes/categoria'));
         this.app.use(this.path.productos , require('../routes/productos'));
         this.app.use(this.path.usuarios, require('../routes/usuarios'));
